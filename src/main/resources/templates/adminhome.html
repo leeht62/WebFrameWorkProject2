@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head th:insert="~{common :: commonHead}">
+  <title>User Manager</title>
+</head>
+
+<body>
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-outline-primary" th:href="@{/home}">← 뒤로가기</a>
+
+    <form th:action="@{/logout}" method="post" class="d-inline">
+      <span class="me-2">환영합니다, <strong sec:authentication="principal.username">관리자</strong></span>
+      <button type="submit" class="btn btn-outline-secondary btn-sm">로그아웃</button>
+    </form>
+  </div>
+
+  <h1 class="text-center mb-4">회원 목록</h1>
+
+  <table class="table table-bordered table-striped table-hover">
+    <thead class="table-light text-center">
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+      <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td class="text-center" th:text="${user.id}">1</td>
+      <td th:text="${user.email}">user@example.com</td>
+      <td>
+        <ul class="mb-0">
+          <li th:each="role : ${user.roles}" th:text="${role.rolename}">ROLE_USER</li>
+        </ul>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div th:insert="~{common :: commonScript}"></div>
+</body>
+</html>

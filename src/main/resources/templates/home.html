@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>SpringBoot Security</title>
+</head>
+
+<body>
+<h2> 안녕하세요. 핸드폰 상품 사이트에 오신 것을 환영합니다 </h2>
+
+<div sec:authorize="isAuthenticated()">
+    <p>환영합니다 <span sec:authentication="principal.username">User</span> 님!!</p>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="LogOut"/>
+    </form>
+
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <h3>You will see this only if you are ADMIN</h3>
+        <p><a th:href="@{/admin/home}">Admin Home</a></p>
+    </div>
+
+    <div>
+        <h3>상품 메뉴 보기</h3>
+        <p><a th:href="@{/products}">상품 목록 보기</a></p>
+    </div>
+
+    Authenticated user roles:
+    <div th:each="authority : ${#authentication.authorities}">
+        <span th:text="${authority.getAuthority()}">[Authority]</span>
+    </div>
+</div>
+
+<div sec:authorize="isAnonymous()">
+    <p><a th:href="@{/login}">LogIn</a></p>
+</div>
+
+</body>
+</html>
